@@ -4,7 +4,6 @@ from matrix_utility import swap_row
 
 
 def gaussian_elimination(mat):
-
     n = len(mat)
 
     # If the matrix is singular the flag will be different from -1
@@ -36,7 +35,7 @@ def forward_substitution(mat):
                 v_max = mat[i][k]
                 pivot_row = i
 
-        if mat[pivot_row][k] == 0:
+        if mat[k][pivot_row] == 0:
             return k  # Matrix is singular
 
         if pivot_row != k:
@@ -97,24 +96,17 @@ def check_solution(original_matrix, solution_vector_for_check):
         print("The test didn't work")
         return False
 
-
-# Function to check if a number is close to zero
-def is_close_to_zero(number, tolerance=1e-6):
-    return abs(number) < tolerance
-
 # ___________________________________________________________________________________________________________
 
 
 if __name__ == '__main__':
 
-    A_b = [[1, 2, 3, 4, 5],
-           [2, 3, 4, 5, 1],
-           [8, 8, 8, 8, 1],
-           [24, 15, 22, 1, 8]]
+    A_b = [[0, -1, 2, -1, -8],
+        [2, 0, 3, -3, -20],
+        [1, 1, 0, 0, -2],
+        [1, -1, 4, 0, 4]]
 
     result = gaussian_elimination(A_b)
-
-
     if isinstance(result, str):
         print(result)
     else:
