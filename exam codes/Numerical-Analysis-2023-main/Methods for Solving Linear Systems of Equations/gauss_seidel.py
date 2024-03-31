@@ -55,8 +55,12 @@ def gauss_seidel(A, b, X0, TOL=1e-16, N=200, print_iterations=None):
     return tuple(x)  # Return the solution after maximum iterations are reached
 
 if __name__ == '__main__':
-    A = np.array([[3, -1, 1], [0, 1, -1], [1, 1, -2]])
-    b = np.array([4, -1, -3])
+    A = np.array([[2, 3, 4, 5, 6],
+              [-5, 3, 4, -2, 3],
+              [4, -5, -2, 2, 6],
+              [4, 5, -1, -2, -3],
+              [5, 5, 3, -3, 5]])
+    b = np.array([70, 20, 26, -12, 37])
     X0 = np.zeros_like(b)
 
     # ________ change here to print only specific values of iterations _____

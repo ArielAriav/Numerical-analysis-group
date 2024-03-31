@@ -38,7 +38,7 @@ def bisection_method(f, a, b, tol=1e-6, print_iterations=None):
     steps = max_steps(a, b, tol)
 
     # Print header for iteration table
-    print("{:<10} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format("Iteration", "a", "b", "f(a)", "f(b)", "c", "f(c)"))
+    # print("{:<10} {:<15} {:<15} {:<15} {:<15} {:<15} {:<15}".format("Iteration", "a", "b", "f(a)", "f(b)", "c", "f(c)"))
 
     # Perform bisection iterations
     while abs(b - a) > tol and k < steps:
@@ -53,9 +53,9 @@ def bisection_method(f, a, b, tol=1e-6, print_iterations=None):
             a = c
 
         # Print iteration details if the current iteration is in the print_iterations list
-        if print_iterations is None or k in print_iterations:
-            print("{:<10} {:<15.6f} {:<15.6f} {:<15.6f} {:<15.6f} {:<15.6f} {:<15.6f}".format(k, a, b, f(a), f(b), c,
-                                                                                              f(c)))
+        # if print_iterations is None or k in print_iterations:
+            # print("{:<10} {:<15.6f} {:<15.6f} {:<15.6f} {:<15.6f} {:<15.6f} {:<15.6f}".format(k, a, b, f(a), f(b), c,
+            #                                                                                   f(c)))
 
         k += 1
 
@@ -65,13 +65,13 @@ def bisection_method(f, a, b, tol=1e-6, print_iterations=None):
 # ____________________________________________________________________________________________________________
 if __name__ == '__main__':
     # Example function: f(x) = x^2 - 4 * sin(x)
-    f = lambda x: x ** 2 - 4 * math.sin(x)
+    f = lambda x:(6*x**6-7*x**5)/(2*x**2+1)
 
     # ________ change here to print only specific values of iterations _____
     # roots = bisection_method(f, 1, 3, print_iterations=[1, 3, 5, 10])
-    roots = bisection_method(f, -1, 3)
+    roots = bisection_method(f, -2, 2)
 
     print(bcolors.OKBLUE, f"\nThe equation f(x) has an approximate root at x = {roots}", bcolors.ENDC)
     print(bcolors.OKBLUE, f"\nSearching for another root",bcolors.ENDC)
-    roots = bisection_method(f,roots,3)
+    roots = bisection_method(f,roots,2)
     print(bcolors.OKBLUE, f"\nThe equation f(x) has an approximate root at x = {roots}", bcolors.ENDC)

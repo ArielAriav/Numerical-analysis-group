@@ -7,17 +7,14 @@ def gauss_seidel(A, b, X0, TOL=1e-16, N=200, print_iterations=None):
     """
     Performs Gauss-Seidel iterations to solve the linear system of equations, Ax=b,
     starting from an initial guess, ``X0``.
-
     Terminates when the change in x is less than ``TOL``, or
     if ``N`` iterations have been exceeded.
-
     :param A: Coefficient matrix.
     :param b: Solution vector.
     :param X0: Initial guess.
     :param TOL: Tolerance for convergence (default is 1e-16).
     :param N: Maximum number of iterations (default is 200).
     :param print_iterations: List of iteration numbers to print (default is None, which prints all iterations).
-
     :return: The estimated solution.
     """
     print("start gauss seidel method")
@@ -60,17 +57,14 @@ def jacobi_iterative(A, b, X0, TOL=1e-16, N=200, print_iterations=None):
     """
     Performs Jacobi iterations to solve the linear system of equations, Ax=b,
     starting from an initial guess, ``X0``.
-
     Terminates when the change in x is less than ``TOL``, or
     if ``N`` iterations have been exceeded.
-
     :param A: Coefficient matrix.
     :param b: Solution vector.
     :param X0: Initial guess.
     :param TOL: Tolerance for convergence (default is 1e-16).
     :param N: Maximum number of iterations (default is 200).
     :param print_iterations: Optional list of iteration numbers to print. If None, all iterations are printed.
-
     :return: The estimated solution.
     """
     print("start jacobi method")
