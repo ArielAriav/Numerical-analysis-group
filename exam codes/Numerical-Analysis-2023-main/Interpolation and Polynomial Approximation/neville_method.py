@@ -2,7 +2,26 @@ from colors import bcolors
 
 
 def neville(x_data, y_data, x_interpolate):
+    """
+    Perform Neville's algorithm for polynomial interpolation.
+
+    Parameters:
+    x_data (list): List of x-values for data points.
+    y_data (list): List of y-values for data points.
+    x_interpolate (float): The x-value to interpolate.
+
+    Returns:
+    float: The interpolated y-value at the given x.
+    """
     n = len(x_data)
+
+    # Check if input lists have the same length
+    if len(y_data) != n:
+        raise ValueError("x_data and y_data must have the same length.")
+
+    # Check if x_interpolate is outside the range defined by x_data
+    if x_interpolate < min(x_data) or x_interpolate > max(x_data):
+        raise ValueError("x_interpolate is outside the range of x_data.")
 
     # Initialize the tableau
     tableau = [[0.0] * n for _ in range(n)]
@@ -23,5 +42,8 @@ if __name__ == '__main__':
     y_data = [1, 0, 2, 3]
     x_interpolate = 3
 
-    interpolated_value = neville(x_data, y_data, x_interpolate)
-    print(bcolors.OKBLUE, f"\nInterpolated value at x = {x_interpolate} is y = {interpolated_value}", bcolors.ENDC)
+    try:
+        interpolated_value = neville(x_data, y_data, x_interpolate)
+        print(bcolors.OKBLUE, f"\nInterpolated value at x = {x_interpolate} is y = {interpolated_value}", bcolors.ENDC)
+    except ValueError as e:
+        print(bcolors.FAIL, f"Error: {e}", bcolors.ENDC)
