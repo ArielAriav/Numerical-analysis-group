@@ -1,5 +1,5 @@
 import numpy as np
-from colors import bcolors
+#from colors import bcolors
 
 
 def romberg_integration(func, a, b, n):
@@ -41,11 +41,11 @@ def f(x):
 
 if __name__ == '__main__':
 
-    a = 0
-    b = 1
-    n = 5
+    a = 40
+    b = 100
+    n = 6
     integral = romberg_integration(f, a, b, n)
 
     print( f" Division into n={n} sections ")
-    print(bcolors.OKBLUE, f"Approximate integral in range [{a},{b}] is {integral}", bcolors.ENDC)
+    print( f"Approximate integral in range [{a},{b}] is {integral}")
 

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import sympy as sp
 
-from colors import bcolors
+#from colors import bcolors
 from sympy.utilities.lambdify import lambdify
 x = sp.symbols('x')
 def simpsons_rule(f, a, b, n):
@@ -37,15 +37,21 @@ def simpsons_rule(f, a, b, n):
     integral *= h / 3
 
     return integral
-
+def calculate_error(f, a, b, n):
+    h = (b - a) / n
+    x_values = [a + i * h for i in range(n+1)]
+    max_derivative_4 = max(abs(f(x).diff(x, 4).subs(x, xi)) for xi in x_values)
+    error = (1/180) * h**4 * (b - a) * max_derivative_4
+    return error
 
 if __name__ == '__main__':
     f = lambda x: math.e ** (x ** 2)
-    n = 10
+    n = 4
     a=0
     b=1
 
     print( f" Division into n={n} sections ")
     integral = simpsons_rule(f, 0, 1, n)
-    print(bcolors.OKBLUE, f"Numerical Integration of definite integral in range [{a},{b}] is {integral}", bcolors.ENDC)
-
+    error = calculate_error(f, a, b, n)
+    print( f"Numerical Integration of definite integral in range [{a},{b}] is {integral}")
+    print(f"Error is {error}")
