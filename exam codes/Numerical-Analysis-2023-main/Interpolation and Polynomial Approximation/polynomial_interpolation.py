@@ -4,7 +4,7 @@ from matrix_utility import *
 
 def GaussJordanElimination(matrix, vector):
     """
-    Function for solving a linear equation using gauss's elimination method
+    Function for solving a linear equation using Gauss-Jordan elimination method
     :param matrix: Matrix nxn
     :param vector: Vector n
     :return: Solve Ax=b -> x=A(-1)b
@@ -16,101 +16,76 @@ def GaussJordanElimination(matrix, vector):
     return MulMatrixVector(invert, vector)
 
 
-
-
-def UMatrix(matrix,vector):
+def DecomposeLU(matrix, is_upper):
     """
+    Function for decomposition into an upper or lower triangular matrix (U/L)
     :param matrix: Matrix nxn
-    :return:Disassembly into a  U matrix
+    :param is_upper: Boolean indicating whether to decompose into U (True) or L (False)
+    :return: U or L matrix
     """
-    # result matrix initialized as singularity matrix
-    U = MakeIMatrix(len(matrix), len(matrix))
-    # loop for each row
+    result = MakeIMatrix(len(matrix), len(matrix))
     for i in range(len(matrix[0])):
-        # pivoting process
-        matrix, vector = RowXchageZero(matrix, vector)
+        matrix, _ = RowXchageZero(matrix, [])
         for j in range(i + 1, len(matrix)):
             elementary = MakeIMatrix(len(matrix[0]), len(matrix))
-            # Finding the M(ij) to reset the organs under the pivot
-            elementary[j][i] = -(matrix[j][i])/matrix[i][i]
+            sign = 1 if is_upper else -1
+            elementary[j][i] = -sign * (matrix[j][i]) / matrix[i][i]
+            if not is_upper:
+                result[j][i] = sign * (matrix[j][i]) / matrix[i][i]
             matrix = MultiplyMatrix(elementary, matrix)
-    # U matrix is a doubling of elementary matrices that we used to reset organs under the pivot
-    U = MultiplyMatrix(U, matrix)
-    return U
+    return MultiplyMatrix(result, matrix)
 
 
-def LMatrix(matrix, vector):
+def SolveUsingLU(matrix, vector):
     """
-       :param matrix: Matrix nxn
-       :return:Disassembly into a  L matrix
-       """
-    # Initialize the result matrix
-    L = MakeIMatrix(len(matrix), len(matrix))
-    # loop for each row
-    for i in range(len(matrix[0])):
-        # pivoting process
-        matrix, vector = RowXchageZero(matrix, vector)
-        for j in range(i + 1, len(matrix)):
-            elementary = MakeIMatrix(len(matrix[0]), len(matrix))
-            # Finding the M(ij) to reset the organs under the pivot
-            elementary[j][i] = -(matrix[j][i])/matrix[i][i]
-            # L matrix is a doubling of inverse elementary matrices
-            L[j][i] = (matrix[j][i]) / matrix[i][i]
-            matrix = MultiplyMatrix(elementary, matrix)
-
-    return L
-
-
-def SolveLU(matrix, vector):
-    """
-    Function for deconstructing a linear equation by ungrouping LU
+    Function for solving a linear equation by decomposing LU
     :param matrix: Matrix nxn
     :param vector: Vector n
     :return: Solve Ax=b -> x=U(-1)L(-1)b
     """
-    matrixU = UMatrix(matrix)
-    matrixL = LMatrix(matrix)
+    matrixU = DecomposeLU(matrix, is_upper=True)
+    matrixL = DecomposeLU(matrix, is_upper=False)
+    if matrixU is None or matrixL is None:
+        return None
     return MultiplyMatrix(InverseMatrix(matrixU), MultiplyMatrix(InverseMatrix(matrixL), vector))
 
 
-def solveMatrix(matrixA,vectorb):
+def solveMatrix(matrixA, vectorb):
     detA = Determinant(matrixA, 1)
     print(bcolors.YELLOW, "\nDET(A) = ", detA)
 
     if detA != 0:
         print("CondA = ", Cond(matrixA, InverseMatrix(matrixA, vectorb)), bcolors.ENDC)
-        print(bcolors.OKBLUE, "\nnon-Singular Matrix - Perform GaussJordanElimination",bcolors.ENDC)
+        print(bcolors.OKBLUE, "\nNon-singular Matrix - Perform Gauss-Jordan Elimination", bcolors.ENDC)
         result = GaussJordanElimination(matrixA, vectorb)
         print(np.array(result))
         return result
     else:
-        print("Singular Matrix - Perform LU Decomposition\n")
-        print("Matrix U: \n")
-        print(np.array(UMatrix(matrixA, vectorb)))
-        print("\nMatrix L: \n")
-        print(np.array(LMatrix(matrixA, vectorb)))
-        print("\nMatrix A=LU: \n")
-        result = MultiplyMatrix(LMatrix(matrixA, vectorb), UMatrix(matrixA, vectorb))
-        print(np.array(result))
-        return result
+        print("Singular Matrix - Unable to solve.")
+        return None
 
 
 def polynomialInterpolation(table_points, x):
-    matrix = [[point[0] ** i for i in range(len(table_points))] for point in table_points] # Makes the initial matrix
+    if len(table_points) < len(table_points[0]):
+        print("Insufficient data points for interpolation.")
+        return None
 
+    matrix = [[point[0] ** i for i in range(len(table_points))] for point in table_points]
     b = [[point[1]] for point in table_points]
 
-    print(bcolors.OKBLUE, "The matrix obtained from the points: ", bcolors.ENDC,'\n', np.array(matrix))
-    print(bcolors.OKBLUE, "\nb vector: ", bcolors.ENDC,'\n',np.array(b))
+    print(bcolors.OKBLUE, "The matrix obtained from the points: ", bcolors.ENDC, '\n', np.array(matrix))
+    print(bcolors.OKBLUE, "\nb vector: ", bcolors.ENDC, '\n', np.array(b))
     matrixSol = solveMatrix(matrix, b)
 
-    result = sum([matrixSol[i][0] * (x ** i) for i in range(len(matrixSol))])
-    print(bcolors.OKBLUE, "\nThe polynom:", bcolors.ENDC)
-    print('P(X) = '+'+'.join([ '('+str(matrixSol[i][0])+') * x^' + str(i) + ' ' for i in range(len(matrixSol))])  )
-    print(bcolors.OKGREEN, f"\nThe Result of P(X={x}) is:", bcolors.ENDC)
-    print(result)
-    return result
-
+    if matrixSol is not None:
+        result = sum([matrixSol[i][0] * (x ** i) for i in range(len(matrixSol))])
+        print(bcolors.OKBLUE, "\nThe polynomial:", bcolors.ENDC)
+        print('P(X) = ' + '+'.join(['(' + str(matrixSol[i][0]) + ') * x^' + str(i) + ' ' for i in range(len(matrixSol))]))
+        print(bcolors.OKGREEN, f"\nThe Result of P(X={x}) is:", bcolors.ENDC)
+        print(result)
+        return result
+    else:
+        return None
 
 if __name__ == '__main__':
 
