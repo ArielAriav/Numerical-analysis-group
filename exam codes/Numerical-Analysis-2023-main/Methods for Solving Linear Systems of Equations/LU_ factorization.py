@@ -27,19 +27,27 @@ def lu(A):
             if pivot_row != i:
                 e_matrix = swap_rows_elementary_matrix(N, i, pivot_row)
                 print(f"elementary matrix for swap between row {i} to row {pivot_row} :\n {e_matrix} \n")
-                A = np.dot(e_matrix, A)
+                A = np.dot(e_matrix, A)  # updating the matrix A by multiplying it with the elementary matrix
                 print(f"The matrix after elementary operation :\n {A}")
                 print(bcolors.OKGREEN,"---------------------------------------------------------------------------", bcolors.ENDC)
 
             for j in range(i + 1, N):
-    
-                #  Compute the multiplier
+                # Compute the multiplier
                 m = -A[j][i] / A[i][i]
+
+                # Generate elementary matrix for row addition
                 e_matrix = row_addition_elementary_matrix(N, j, i, m)
+
+                # Compute the inverse of the elementary matrix
                 e_inverse = np.linalg.inv(e_matrix)
+
+                # Update L and A matrices
                 L = np.dot(L, e_inverse)
                 A = np.dot(e_matrix, A)
-                print(f"elementary matrix to zero the element in row {j} below the pivot in column {i} :\n {e_matrix} \n")
+
+                # Print information for debugging
+                print(
+                    f"elementary matrix to zero the element in row {j} below the pivot in column {i} :\n {e_matrix} \n")
                 print(f"The matrix after elementary operation :\n {A}")
                 print(bcolors.OKGREEN,"---------------------------------------------------------------------------", bcolors.ENDC)
 
