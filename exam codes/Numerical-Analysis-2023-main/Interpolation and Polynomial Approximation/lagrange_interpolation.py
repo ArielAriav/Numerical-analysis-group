@@ -31,7 +31,7 @@ def lagrange_interpolation(x_data, y_data, x):
     result = 0.0
 
     for i in range(n):
-        term = y_data[i]  # Initialize the term with the y-value at the i-th data point
+        term = y_data[i]  # Initialize the term with the y-value at the i data point
         for j in range(n):
             if i != j:  # Exclude the current data point when calculating the term
                 term *= (x - x_data[j]) / (x_data[i] - x_data[j])  # Calculate the term using Lagrange basis polynomials
@@ -42,7 +42,6 @@ def lagrange_interpolation(x_data, y_data, x):
 
 if __name__ == '__main__':
     try:
-        # Example data points
         x_data = [1.2, 1.3, 1.4, 1.5, 1.6]
         y_data = [-3.50, -3.69, 0.9043, 1.1293, 2.3756]
         x_interpolate1 = 1.35  # The first x-value where we want to interpolate
