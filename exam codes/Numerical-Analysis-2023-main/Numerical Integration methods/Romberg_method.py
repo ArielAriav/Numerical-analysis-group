@@ -41,11 +41,17 @@ def f(x):
 
 if __name__ == '__main__':
 
-    a = -1.0
+    a = -1.1
     b = 0.7
-    n = 16
-    integral = romberg_integration(f, a, b, n)
+    n1 = 16
+    integral = romberg_integration(f, a, b, n1)
 
-    print(f"Division into n={n} sections ")
-    print(f"Approximate integral in range [{a},{b}] is {integral:.5f}")
+    print(f"Division into n={n1} sections: ")
+    print(f"Approximate integral in range [{a},{b}] is {integral}")
 
+    n2 = 8
+    integral2 = romberg_integration(f, a, b, n2)
+    print(f"Division into n={n2} sections: ")
+    print(f"Approximate integral in range [{a},{b}] is {integral2}")
+
+    print(f"Final result: {integral:.5f}")
