@@ -21,6 +21,13 @@ def lagrange_interpolation(x_data, y_data, x):
         raise ValueError("x_data and y_data must be non-empty lists of equal lengths.")
 
     n = len(x_data)  # Number of data points
+
+    # Check if the interpolation point matches any of the given data points
+    for i in range(n):
+        if x == x_data[i]:
+            return y_data[i]
+
+    # If the interpolation point does not match any data point, proceed with Lagrange interpolation
     result = 0.0
 
     for i in range(n):
@@ -36,15 +43,22 @@ def lagrange_interpolation(x_data, y_data, x):
 if __name__ == '__main__':
     try:
         # Example data points
-        x_data = [1, 2, 5]
-        y_data = [1, 0, 2]
-        x_interpolate = 3  # The x-value where you want to interpolate
+        x_data = [1.2, 1.3, 1.4, 1.5, 1.6]
+        y_data = [-3.50, -3.69, 0.9043, 1.1293, 2.3756]
+        x_interpolate1 = 1.35  # The first x-value where we want to interpolate
+        x_interpolate2 = 1.55  # The second x-value where we want to interpolate
 
-        # Interpolate y-value at x_interpolate
-        y_interpolate = lagrange_interpolation(x_data, y_data, x_interpolate)
+        # Interpolate y-value at x_interpolate1
+        y_interpolate1 = lagrange_interpolation(x_data, y_data, x_interpolate1)
 
-        # Print the interpolated value
-        print(bcolors.OKBLUE, "\nInterpolated value at x =", x_interpolate, "is y =", y_interpolate, bcolors.ENDC)
+        # Interpolate y-value at x_interpolate1
+        y_interpolate2 = lagrange_interpolation(x_data, y_data, x_interpolate2)
+
+        # Print the interpolated1 value
+        print(bcolors.OKBLUE, "\nInterpolated value at x =", x_interpolate1, "is y =", y_interpolate1, bcolors.ENDC)
+
+        # Print the interpolated1 value
+        print(bcolors.OKBLUE, "\nInterpolated value at x =", x_interpolate2, "is y =", y_interpolate2, bcolors.ENDC)
 
     except ValueError as ve:
         print(bcolors.FAIL, "Error:", ve, bcolors.ENDC)
