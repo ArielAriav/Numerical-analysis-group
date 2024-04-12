@@ -1,3 +1,4 @@
+#https://github.com/ArielAriav/Numerical-analysis-group.git
 import math
 
 def trapezoidal_rule(f, a, b, n):
